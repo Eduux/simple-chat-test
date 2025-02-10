@@ -4,14 +4,12 @@ import { useState, useRef } from "react";
 import { Textarea } from "../../../components/ui/textarea";
 import { Send } from "lucide-react";
 import { Button } from "../../../components/ui/button";
-import { useChat } from "../stores/chat";
 
 type Props = {
   onSend(message: string): void;
 };
 
 export default function SendMessage({ onSend }: Props) {
-  const { loading } = useChat();
   const [message, setMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -45,15 +43,14 @@ export default function SendMessage({ onSend }: Props) {
       <Textarea
         ref={textareaRef}
         id="chat-textarea"
-        className="resize-none w-full bg-gray-50 min-h-[36px] overflow-hidden"
+        className="resize-none w-full bg-gray-50 min-h-[36px] max-h-40 overflow-y-auto"
         value={message}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         rows={1}
         placeholder="Send a message..."
-        disabled={loading}
       />
-      <Button onClick={send} disabled={!message || loading}>
+      <Button onClick={send} disabled={!message}>
         <Send className="w-5 h-5 cursor-pointer" />
       </Button>
     </div>

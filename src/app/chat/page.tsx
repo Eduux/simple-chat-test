@@ -1,5 +1,8 @@
-import Chat from "@/app/chat/components/chat";
+import Chat from "./components/chat";
+import { v4 as uuidv4 } from "uuid";
 
-export default async function ChatPage() {
-  return <Chat />;
+export default function ChatPage() {
+  const chatId = uuidv4();
+
+  return <Chat chatId={chatId} />;
 }

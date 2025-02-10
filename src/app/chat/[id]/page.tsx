@@ -1,5 +1,5 @@
 import { getChatById } from "@/domain/chat";
-import Chat from "../components/chat";
+import Chat, { ChatMessage } from "../components/chat";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -9,9 +9,11 @@ export default async function ChatPage({ params }: Props) {
   const { id } = await params;
   const chat = await getChatById(id);
 
-  if (chat) {
-    return <Chat chat={chat} />;
-  }
+  const chatMessages = chat?.messages.map(({ content, sender, timestamp }) => ({
+    content,
+    sender,
+    timestamp,
+  })) as ChatMessage[];
 
-  return <div>Chat not found.</div>;
+  return <Chat messages={chatMessages} chatId={id} />;
 }

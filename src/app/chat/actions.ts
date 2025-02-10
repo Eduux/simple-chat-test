@@ -1,45 +1,43 @@
 "use server";
 
 import * as chatActions from "@/domain/chat";
-import { getSession } from "@auth0/nextjs-auth0";
 
 export async function sendMessage({
   message,
   chatId,
+  userEmail,
 }: {
   message: string;
-  chatId?: string;
+  chatId: string;
+  userEmail: string;
 }) {
-  // Certifica-se de chamar getSession primeiro
-  const session = await getSession();
-  if (!session?.user?.email) {
-    throw new Error("Usuário não autenticado.");
-  }
+  const chatExists = await chatActions.getChatById(chatId, false);
 
-  const userEmail = session.user.email;
+  if (chatExists) {
+    await chatActions.addMessage({ sender: "USER", chatId, content: message });
 
-  if (chatId) {
-    return chatActions.addMessage({ sender: "USER", chatId, content: message });
+    return { success: true, newChat: false };
   }
 
   const chat = await chatActions.createChat({
+    id: chatId,
     title: message,
     userEmail,
   });
 
-  return chatActions.addMessage({
+  await chatActions.addMessage({
     sender: "USER",
     chatId: chat.id,
     content: message,
   });
+
+  return { success: true, newChat: true };
 }
 
-export async function getUserChats() {
-  const session = await getSession();
+export async function getUserChats(userEmail: string) {
+  return chatActions.getChatsByUser(userEmail);
+}
 
-  if (!session?.user?.email) {
-    throw new Error("Usuário não autenticado.");
-  }
-
-  return chatActions.getChatsByUser(session.user.email);
+export async function deleteChat(chatId: string) {
+  return chatActions.deleteChat(chatId);
 }

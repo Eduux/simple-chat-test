@@ -3,18 +3,21 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Chat } from "@prisma/client";
 import { getUserChats } from "../actions";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 interface ChatContextType {
   chats: Chat[] | null;
   isOpen: boolean;
   loading: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  setLoading: (loading: boolean) => void;
   load: () => void;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useUser();
   const [chats, setChats] = useState<Chat[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -22,10 +25,15 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const load = async () => {
     setLoading(true);
     try {
-      const userChats = await getUserChats();
-      if (userChats.length) {
-        setChats(userChats);
-        setIsOpen(true);
+      if (user?.email) {
+        const userChats = await getUserChats(user?.email);
+        if (userChats.length) {
+          setChats(userChats);
+          setIsOpen(true);
+        } else {
+          setIsOpen(false);
+          setChats([]);
+        }
       }
     } catch (err) {
       console.error(err);
@@ -36,10 +44,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     load();
-  }, []);
+  }, [user?.email]);
 
   return (
-    <ChatContext.Provider value={{ chats, isOpen, loading, setIsOpen, load }}>
+    <ChatContext.Provider
+      value={{ chats, isOpen, loading, setIsOpen, load, setLoading }}
+    >
       {children}
     </ChatContext.Provider>
   );

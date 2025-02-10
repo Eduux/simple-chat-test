@@ -1,34 +1,61 @@
 "use client";
 
-import { Chat as ChatType } from "@/domain/chat/types";
 import { sendMessage } from "../actions";
 import SendMessage from "./send-message";
-import { useRouter } from "next/navigation";
+import { useChat } from "../stores/chat";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { useEffect, useState } from "react";
+import { Sender } from "@prisma/client";
+import Messages from "./messages";
 
-type Props = {
-  chat?: ChatType;
+export type ChatMessage = {
+  sender: Sender;
+  content: string;
+  timestamp?: Date;
 };
 
-export default function Chat({ chat }: Props) {
-  const router = useRouter();
+type Props = {
+  chatId: string;
+  messages?: ChatMessage[];
+};
+
+export default function Chat({ chatId, messages }: Props) {
+  const { user } = useUser();
+  const { load } = useChat();
+
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(
+    messages || []
+  );
+
+  const addMessage = (chat: ChatMessage) => {
+    setChatMessages((prev) => [...prev, chat]);
+  };
 
   const send = async (message: string) => {
-    try {
-      const data = await sendMessage({
-        chatId: chat?.id,
-        message,
-      });
+    window.history.replaceState({}, "", `/chat/${chatId}`);
 
-      if (!chat) {
-        router.push(`/chat/${data.chatId}`);
-      }
-    } catch (err) {
-      console.log(err);
+    if (user?.email) {
+      addMessage({ sender: "USER", content: message });
+
+      sendMessage({
+        chatId,
+        message,
+        userEmail: user.email,
+      }).then((response) => {
+        if (response.newChat) {
+          load();
+        }
+      });
     }
   };
 
+  useEffect(() => {
+    setChatMessages(messages || []);
+  }, [chatId]);
+
   return (
-    <div>
+    <div className="flex flex-col h-full max-w-full">
+      <Messages messages={chatMessages} />
       <SendMessage onSend={send} />
     </div>
   );

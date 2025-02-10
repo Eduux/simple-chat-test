@@ -2,14 +2,16 @@ import { PrismaClient, Sender } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function createChat({
+  id,
   title,
   userEmail,
 }: {
+  id: string;
   title: string;
   userEmail: string;
 }) {
   return await prisma.chat.create({
-    data: { title, userEmail },
+    data: { title, userEmail, id },
   });
 }
 
@@ -20,10 +22,13 @@ export async function getChatsByUser(userEmail: string) {
   });
 }
 
-export async function getChatById(chatId: string) {
+export async function getChatById(
+  chatId: string,
+  includeMessages: boolean = true
+) {
   return await prisma.chat.findUnique({
     where: { id: chatId },
-    include: { messages: true },
+    include: { messages: includeMessages },
   });
 }
 
@@ -42,6 +47,10 @@ export async function addMessage({
 }
 
 export async function deleteChat(chatId: string) {
+  await prisma.message.deleteMany({
+    where: { chatId },
+  });
+
   return await prisma.chat.delete({
     where: { id: chatId },
   });
