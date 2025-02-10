@@ -1,12 +1,13 @@
 import UserInfoTop from "@/components/user-info-top";
 import { ChatList } from "./components/chat-list";
+import { ChatProvider } from "./stores/chat";
 
 export default async function ChatLayout({
   children,
 }: React.PropsWithChildren) {
   return (
     <div>
-      <header className="border-b border-gray-100 bg-gray-800 text-white shadow-lg w-full py-3  px-6 flex items-center justify-between">
+      <header className="border-b border-gray-100 bg-gray-800 text-white shadow-md w-full py-3  px-6 flex items-center justify-between">
         <div></div>
         <div>
           <UserInfoTop />
@@ -15,10 +16,10 @@ export default async function ChatLayout({
 
       <div>
         <main className="flex w-full h-[calc(100vh-49px)]">
-          <div className="w-full max-w-[300px]">
+          <ChatProvider>
             <ChatList />
-          </div>
-          <div className="flex-1 py-9 px-6 max-w-7xl mx-auto">{children}</div>
+            <div className="flex-1 py-9 px-6 max-w-7xl mx-auto">{children}</div>
+          </ChatProvider>
         </main>
       </div>
     </div>

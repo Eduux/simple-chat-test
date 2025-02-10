@@ -16,7 +16,7 @@ export async function createChat({
 export async function getChatsByUser(userEmail: string) {
   return await prisma.chat.findMany({
     where: { userEmail },
-    include: { messages: true },
+    include: { messages: false },
   });
 }
 

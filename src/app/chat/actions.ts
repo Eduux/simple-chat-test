@@ -1,15 +1,23 @@
 "use server";
+
 import * as chatActions from "@/domain/chat";
+import { getSession } from "@auth0/nextjs-auth0";
 
 export async function sendMessage({
   message,
   chatId,
-  userEmail,
 }: {
   message: string;
   chatId?: string;
-  userEmail: string;
 }) {
+  // Certifica-se de chamar getSession primeiro
+  const session = await getSession();
+  if (!session?.user?.email) {
+    throw new Error("Usuário não autenticado.");
+  }
+
+  const userEmail = session.user.email;
+
   if (chatId) {
     return chatActions.addMessage({ sender: "USER", chatId, content: message });
   }
@@ -18,6 +26,7 @@ export async function sendMessage({
     title: message,
     userEmail,
   });
+
   return chatActions.addMessage({
     sender: "USER",
     chatId: chat.id,
@@ -25,6 +34,12 @@ export async function sendMessage({
   });
 }
 
-export async function getUserChats({ userEmail }: { userEmail: string }) {
-  return chatActions.getChatsByUser(userEmail);
+export async function getUserChats() {
+  const session = await getSession();
+
+  if (!session?.user?.email) {
+    throw new Error("Usuário não autenticado.");
+  }
+
+  return chatActions.getChatsByUser(session.user.email);
 }
