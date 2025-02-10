@@ -12,8 +12,10 @@
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.6.0",
     "@prisma/client": "^6.3.1",
+    "@radix-ui/react-slot": "^1.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "lucide": "^0.475.0",
     "lucide-react": "^0.475.0",
     "next": "15.1.6",
     "react": "^19.0.0",

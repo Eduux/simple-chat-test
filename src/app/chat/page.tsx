@@ -1,3 +1,5 @@
-export default function Chat() {
-  return <div>hello</div>;
+import Chat from "@/app/chat/components/chat";
+
+export default async function ChatPage() {
+  return <Chat />;
 }
