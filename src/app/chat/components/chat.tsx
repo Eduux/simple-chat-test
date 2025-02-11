@@ -5,7 +5,7 @@ import SendMessage from "./send-message";
 import { useChat } from "../../../stores/chat";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useEffect, useState } from "react";
-import { Sender } from "@prisma/client";
+import { Message, Sender } from "@prisma/client";
 import Messages from "./messages";
 import { ArrowDown } from "lucide-react";
 
@@ -17,7 +17,7 @@ export type ChatMessage = {
 
 type Props = {
   chatId: string;
-  messages?: ChatMessage[];
+  messages?: Message[];
 };
 
 export default function Chat({ chatId, messages }: Props) {
