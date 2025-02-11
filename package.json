@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:chat": "prisma migrate dev --schema src/domain/chat/schema.prisma"
+    "db:chat": "prisma migrate dev --name init"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.1.9",
