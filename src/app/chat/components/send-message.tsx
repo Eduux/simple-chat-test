@@ -4,22 +4,26 @@ import { useState, useRef } from "react";
 import { Textarea } from "../../../components/ui/textarea";
 import { Send } from "lucide-react";
 import { Button } from "../../../components/ui/button";
+import { LoadingSpinner } from "@/components/loading-spinner";
+import { useChat } from "@/stores/chat";
 
 type Props = {
   onSend(message: string): void;
+  loading: boolean;
 };
 
-export default function SendMessage({ onSend }: Props) {
+export default function SendMessage({ onSend, loading }: Props) {
+  const { loading: loadingAsideChat } = useChat();
   const [message, setMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const send = async () => {
     if (message.trim() === "") return;
     setMessage("");
-    onSend(message);
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
+    onSend(message);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -39,7 +43,7 @@ export default function SendMessage({ onSend }: Props) {
   };
 
   return (
-    <div className="flex items-end gap-2">
+    <div className="flex items-end gap-2 pr-6">
       <Textarea
         ref={textareaRef}
         id="chat-textarea"
@@ -48,10 +52,15 @@ export default function SendMessage({ onSend }: Props) {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         rows={1}
+        autoFocus
         placeholder="Send a message..."
       />
-      <Button onClick={send} disabled={!message}>
-        <Send className="w-5 h-5 cursor-pointer" />
+      <Button onClick={send} disabled={!message || loading || loadingAsideChat}>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <Send className="w-5 h-5 cursor-pointer" />
+        )}
       </Button>
     </div>
   );

@@ -1,6 +1,6 @@
 import UserInfoTop from "@/components/user-info-top";
 import { ChatList } from "./components/chat-list";
-import { ChatProvider } from "./stores/chat";
+import { ChatProvider } from "../../stores/chat";
 
 export default async function ChatLayout({
   children,
@@ -18,7 +18,7 @@ export default async function ChatLayout({
         <main className="flex w-full h-[calc(100vh-49px)]">
           <ChatProvider>
             <ChatList />
-            <div className="flex-1 py-9 px-6 max-w-7xl mx-auto">{children}</div>
+            <div className="flex-1 py-9 pl-6">{children}</div>
           </ChatProvider>
         </main>
       </div>

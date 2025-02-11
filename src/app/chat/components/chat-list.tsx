@@ -1,6 +1,6 @@
 "use client";
 
-import { useChat } from "../stores/chat";
+import { useChat } from "../../../stores/chat";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { motion } from "framer-motion";
 import { deleteChat } from "../actions";
@@ -54,7 +54,10 @@ export function ChatList() {
                     key={chat.id}
                     onClick={() => goToChat(chat.id)}
                   >
-                    <span>{chat.title}</span>
+                    <span className="text-sm truncate whitespace-nowrap overflow-hidden max-w-[200px]">
+                      {chat.title}
+                    </span>
+
                     <Button
                       onClick={(e) => {
                         e.stopPropagation();

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { Chat } from "@prisma/client";
-import { getUserChats } from "../actions";
+import { getUserChats } from "../app/chat/actions";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 interface ChatContextType {
