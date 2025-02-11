@@ -56,7 +56,12 @@ export function ChatList() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <div>
-                  <Button onClick={createNewChat} disabled={limit} size="sm">
+                  <Button
+                    onClick={createNewChat}
+                    data-testid="new-chat"
+                    disabled={limit}
+                    size="sm"
+                  >
                     <Plus className="w-5 h-5" />
                   </Button>
                 </div>
@@ -81,6 +86,7 @@ export function ChatList() {
                     className="flex items-center justify-between border-b pb-2 cursor-pointer hover:border-black transition-all"
                     key={chat.id}
                     onClick={() => goToChat(chat.id)}
+                    data-testid={`chat-${chat.id}`}
                   >
                     <span className="text-sm truncate whitespace-nowrap overflow-hidden max-w-[200px]">
                       {chat.title}
@@ -88,7 +94,11 @@ export function ChatList() {
 
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          data-testid="dropdown-menu-chat"
+                        >
                           <MoreHorizontal />
                         </Button>
                       </DropdownMenuTrigger>
@@ -96,6 +106,7 @@ export function ChatList() {
                         <DropdownMenuItem
                           onClick={() => deleteFromList(chat.id)}
                           className="text-red-500 flex items-center justify-between"
+                          data-testid="delete-chat"
                         >
                           Delete <Trash2 className="w-4 h-4 text-red-500" />
                         </DropdownMenuItem>
