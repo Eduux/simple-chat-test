@@ -9,11 +9,9 @@ src
 │── utils/               # Global utility functions
 │── stores/              # Global state management using Context Api
 │   ├── [store]/         # Individual stores
-│   │   ├── _tests_/     # Unit tests for Context stores
 │   │   ├── ...files     # Store definitions
 │── domain/              # Business logic and types
 │   ├── [domain]/        # Specific domain modules
-│   │   ├── _tests_/     # Unit tests for business logic
 │   │   ├── ...files     # Business logic and type definitions
 │── components/          # Reusable UI components (buttons, cards, etc.)
 │   ├── ...commonComponents
