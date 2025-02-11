@@ -9,11 +9,12 @@ export default async function ChatPage({ params }: Props) {
   const { id } = await params;
   const chat = await getChatById(id);
 
-  const chatMessages = chat?.messages.map(({ content, sender, timestamp }) => ({
-    content,
-    sender,
-    timestamp,
-  })) as ChatMessage[];
+  const chatMessages: ChatMessage[] =
+    chat?.messages.map(({ content, sender, timestamp }) => ({
+      content,
+      sender,
+      timestamp,
+    })) || [];
 
   return <Chat messages={chatMessages} chatId={id} />;
 }
