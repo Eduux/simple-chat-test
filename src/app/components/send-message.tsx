@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Textarea } from "../../../components/ui/textarea";
+import { Textarea } from "../../components/ui/textarea";
 import { Send } from "lucide-react";
-import { Button } from "../../../components/ui/button";
+import { Button } from "../../components/ui/button";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { useChat } from "@/stores/chat";
 

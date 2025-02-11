@@ -1,5 +1,5 @@
 import { getChatById } from "@/domain/chat";
-import Chat from "../components/chat";
+import Chat from "../../components/chat";
 
 type Props = {
   params: Promise<{ id: string }>;

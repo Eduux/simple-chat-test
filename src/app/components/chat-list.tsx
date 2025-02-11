@@ -1,6 +1,6 @@
 "use client";
 
-import { useChat } from "../../../stores/chat";
+import { useChat } from "../../stores/chat";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { motion } from "framer-motion";
 import { deleteChat } from "../actions";
@@ -13,8 +13,7 @@ export function ChatList() {
   const { chats, loading, isOpen, load, setLoading } = useChat();
 
   const createNewChat = () => {
-    router.push(`/chat`);
-    router.refresh();
+    router.push(`/`);
   };
 
   const goToChat = (chatId: string) => {
@@ -25,7 +24,7 @@ export function ChatList() {
     setLoading(true);
     await deleteChat(chatId);
     await load();
-    router.push("/chat");
+    router.push("/");
   };
 
   return (

@@ -2,7 +2,7 @@
 
 import { sendMessage } from "../actions";
 import SendMessage from "./send-message";
-import { useChat } from "../../../stores/chat";
+import { useChat } from "../../stores/chat";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useEffect, useState } from "react";
 import { Message, Sender } from "@/domain/chat/types";

@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUserChats } from "../app/chat/actions";
+import { getUserChats } from "../app/actions";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { Chat } from "@/domain/chat/types";
 
