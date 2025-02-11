@@ -49,4 +49,4 @@ Run tests
 npm run test
 ```
 
-# [Live demo vercel https://curotec-test.vercel.app/ ](https://curotec-test.vercel.app/)
+# [Live demo vercel https://simple-chat-test.vercel.app/ ](https://simple-chat-test.vercel.app/)
