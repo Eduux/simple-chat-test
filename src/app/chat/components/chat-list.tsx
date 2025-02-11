@@ -14,6 +14,7 @@ export function ChatList() {
 
   const createNewChat = () => {
     router.push(`/chat`);
+    router.refresh();
   };
 
   const goToChat = (chatId: string) => {
