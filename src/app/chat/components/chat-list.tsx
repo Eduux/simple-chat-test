@@ -7,11 +7,15 @@ import { deleteChat } from "../actions";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Trash2, Plus } from "lucide-react";
-import Link from "next/link";
 
 export function ChatList() {
   const router = useRouter();
   const { chats, loading, isOpen, load, setLoading } = useChat();
+
+  const createNewChat = () => {
+    router.push(`/chat`);
+    router.refresh();
+  };
 
   const goToChat = (chatId: string) => {
     router.push(`/chat/${chatId}`);
@@ -34,9 +38,9 @@ export function ChatList() {
       >
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-semibold">My Chats</h2>
-          <Link href="/chat">
+          <Button onClick={createNewChat}>
             <Plus className="w-5 h-5" />
-          </Link>
+          </Button>
         </div>
 
         {loading ? (
