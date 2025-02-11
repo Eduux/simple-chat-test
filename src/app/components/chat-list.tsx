@@ -6,7 +6,20 @@ import { motion } from "framer-motion";
 import { deleteChat } from "../actions";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Trash2, Plus } from "lucide-react";
+import { Trash2, Plus, MoreHorizontal } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useMemo } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function ChatList() {
   const router = useRouter();
@@ -27,6 +40,8 @@ export function ChatList() {
     router.push("/");
   };
 
+  const limit = useMemo(() => !!(chats && chats.length >= 3), [chats]);
+
   return (
     <div className={`${isOpen ? `w-full max-w-[300px]` : `w-0`}`}>
       <motion.div
@@ -37,9 +52,22 @@ export function ChatList() {
       >
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-semibold">My Chats</h2>
-          <Button onClick={createNewChat}>
-            <Plus className="w-5 h-5" />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <Button onClick={createNewChat} disabled={limit} size="sm">
+                    <Plus className="w-5 h-5" />
+                  </Button>
+                </div>
+              </TooltipTrigger>
+              {limit ? (
+                <TooltipContent>
+                  <p>You have reached the limit of 3 chats</p>
+                </TooltipContent>
+              ) : null}
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         {loading ? (
@@ -58,16 +86,21 @@ export function ChatList() {
                       {chat.title}
                     </span>
 
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteFromList(chat.id);
-                      }}
-                      size="icon"
-                      variant="ghost"
-                    >
-                      <Trash2 className="w-4 h-4 text-red-500" />
-                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm">
+                          <MoreHorizontal />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem
+                          onClick={() => deleteFromList(chat.id)}
+                          className="text-red-500 flex items-center justify-between"
+                        >
+                          Delete <Trash2 className="w-4 h-4 text-red-500" />
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 ))}
               </div>

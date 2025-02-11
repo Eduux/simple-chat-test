@@ -1,6 +1,6 @@
 ## Next Front end test
 
-This project uses: Next 15, Tailwind, Typescript, Open AI.
+This project uses: Next 15, Shadcn, Tailwind, Typescript, Open AI.
 
 ## Architecture
 
