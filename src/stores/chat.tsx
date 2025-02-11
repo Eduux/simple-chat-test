@@ -1,9 +1,9 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { Chat } from "@prisma/client";
 import { getUserChats } from "../app/chat/actions";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { Chat } from "@/domain/chat/types";
 
 interface ChatContextType {
   chats: Chat[] | null;

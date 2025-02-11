@@ -1,4 +1,5 @@
-import { PrismaClient, Sender } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+import { Sender } from "./types";
 const prisma = new PrismaClient();
 
 export async function createChat({
